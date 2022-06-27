@@ -1,5 +1,6 @@
 package com.tejacodes.blogapplication.dto;
 
+import java.util.Set;
 
 public class PostDTO {
 	
@@ -7,6 +8,7 @@ public class PostDTO {
 	private String title;
 	private String description;
 	private String content;
+	private Set<CommentDTO> comments;
 	
 	public PostDTO() {}
 	
@@ -41,11 +43,11 @@ public class PostDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
-	@Override
-	public String toString() {
-		return "PostDTO [id=" + id + ", title=" + title + ", description=" + description + ", content=" + content + "]";
+	public Set<CommentDTO> getComments() {
+		return comments;
 	}
-	
+	public void setComments(Set<CommentDTO> comments) {
+		this.comments = comments;
+	}
 	
 }

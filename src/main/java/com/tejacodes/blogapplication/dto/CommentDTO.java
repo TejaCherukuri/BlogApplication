@@ -10,7 +10,6 @@ public class CommentDTO {
 	public CommentDTO() {}
 
 	public CommentDTO(long id, String name, String email, String body) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;

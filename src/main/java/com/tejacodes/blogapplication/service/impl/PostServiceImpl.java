@@ -3,6 +3,7 @@ package com.tejacodes.blogapplication.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +26,11 @@ public class PostServiceImpl implements PostService {
 	 * @Autowired is not needed
 	 */
 	private PostRepository postRepository;
+	private ModelMapper mapper;
 	
-	public PostServiceImpl(PostRepository postRepository) {
+	public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
 		this.postRepository = postRepository;
+		this.mapper = mapper;
 	}
 
 	/*
@@ -126,12 +129,14 @@ public class PostServiceImpl implements PostService {
 	 */
 	private PostDTO mapToDTO(Post post) {
 		
-		PostDTO postDTO = new PostDTO();
+//		PostDTO postDTO = new PostDTO();
+//		
+//		postDTO.setId(post.getId());
+//		postDTO.setTitle(post.getTitle());
+//		postDTO.setDescription(post.getDescription());
+//		postDTO.setContent(post.getContent());
 		
-		postDTO.setId(post.getId());
-		postDTO.setTitle(post.getTitle());
-		postDTO.setDescription(post.getDescription());
-		postDTO.setContent(post.getContent());
+		PostDTO postDTO = mapper.map(post, PostDTO.class);
 		
 		return postDTO;
 	}
@@ -141,11 +146,13 @@ public class PostServiceImpl implements PostService {
 	 */
 	private Post mapToEntity(PostDTO postDTO)
 	{
-		Post post = new Post();
+//		Post post = new Post();
+//		
+//		post.setTitle(postDTO.getTitle());
+//		post.setDescription(postDTO.getDescription());
+//		post.setContent(postDTO.getContent());
 		
-		post.setTitle(postDTO.getTitle());
-		post.setDescription(postDTO.getDescription());
-		post.setContent(postDTO.getContent());
+		Post post = mapper.map(postDTO, Post.class);
 		
 		return post;
 	}

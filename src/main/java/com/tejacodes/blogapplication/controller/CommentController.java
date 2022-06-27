@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +28,9 @@ public class CommentController {
 	public CommentController(CommentService commentService) {
 		this.commentService = commentService;
 	}
-
-
+	
+	// Only Admin is allowed to create a comment
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/{postId}/comments")
 	public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") long postId,
 													@Valid @RequestBody CommentDTO commentDTO)
@@ -53,6 +55,8 @@ public class CommentController {
 		return new ResponseEntity<>(commentDTO, HttpStatus.OK);
 	}
 	
+	// Only Admin is allowed to update a comment
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{postId}/comments/{id}")
 	public ResponseEntity<CommentDTO> updateComment(@PathVariable("postId") long postId,
 													@PathVariable("id") long id,
@@ -62,6 +66,8 @@ public class CommentController {
 		return new ResponseEntity<>(commentDTOResult, HttpStatus.OK);
 	}
 	
+	// Only Admin is allowed to delete a comment
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{postId}/comments/{id}")
 	public ResponseEntity<String> deleteComment(@PathVariable("postId") long postId,
 													@PathVariable("id") long id)

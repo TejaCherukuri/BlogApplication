@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class PostController {
 	
 	/* 
 	 * Constructor based Dependency Injection. 
-	 * From Spring 4.3, if there is only one field inside spring Bean class, 
+	 * From Spring 4.3, if there is only one constructor inside spring Bean class, 
 	 * @Autowired is not needed
 	 */
 	private PostService postService;
@@ -36,7 +37,9 @@ public class PostController {
 	
 	/*
 	 * To create/add a new post
+	 * Only Admin is allowed to create a post - Secured using @PreAuthroize of Spring Security
 	 */
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO)
 	{
@@ -71,7 +74,9 @@ public class PostController {
 	
 	/*
 	 * To update a post
+	 * Only Admin is allowed to update a post - Secured using @PreAuthroize of Spring Security
 	 */
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable("id") long id)
 	{
@@ -81,7 +86,9 @@ public class PostController {
 	
 	/*
 	 * To delete a post by id
+	 * Only Admin is allowed to delete a post - Secured using @PreAuthroize of Spring Security
 	 */
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deletePostById(@PathVariable("id") long id)
 	{

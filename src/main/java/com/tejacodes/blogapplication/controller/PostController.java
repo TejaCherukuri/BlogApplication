@@ -1,5 +1,7 @@
 package com.tejacodes.blogapplication.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +38,7 @@ public class PostController {
 	 * To create/add a new post
 	 */
 	@PostMapping
-	public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO)
+	public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO)
 	{
 		PostDTO resultPostDTO = postService.createPost(postDTO);
 		return new ResponseEntity<>(resultPostDTO, HttpStatus.CREATED);
@@ -71,7 +73,7 @@ public class PostController {
 	 * To update a post
 	 */
 	@PutMapping("/{id}")
-	public ResponseEntity<PostDTO> updatePost(@RequestBody PostDTO postDTO, @PathVariable("id") long id)
+	public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable("id") long id)
 	{
 		PostDTO postDTOResult = postService.updatePost(postDTO, id);
 		return new ResponseEntity<>(postDTOResult,HttpStatus.OK);

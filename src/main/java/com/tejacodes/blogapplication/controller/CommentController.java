@@ -2,6 +2,8 @@ package com.tejacodes.blogapplication.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +31,7 @@ public class CommentController {
 
 	@PostMapping("/{postId}/comments")
 	public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") long postId,
-													@RequestBody CommentDTO commentDTO)
+													@Valid @RequestBody CommentDTO commentDTO)
 	
 	{
 		CommentDTO commentDTOResult = commentService.createComment(postId, commentDTO);
@@ -54,7 +56,7 @@ public class CommentController {
 	@PutMapping("/{postId}/comments/{id}")
 	public ResponseEntity<CommentDTO> updateComment(@PathVariable("postId") long postId,
 													@PathVariable("id") long id,
-													@RequestBody CommentDTO commentDTO)
+													@Valid @RequestBody CommentDTO commentDTO)
 	{
 		CommentDTO commentDTOResult = commentService.updateComment(postId, id, commentDTO);
 		return new ResponseEntity<>(commentDTOResult, HttpStatus.OK);

@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tejacodes.blogapplication.dto.CommentDTO;
 import com.tejacodes.blogapplication.service.CommentService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(value = "CRUD REST APIs for Comment Respource")
 @RestController
 @RequestMapping("/api/v1/posts")
 public class CommentController {
@@ -30,6 +34,7 @@ public class CommentController {
 	}
 	
 	// Only Admin is allowed to create a comment
+	@ApiOperation(value = "Create Comment REST API")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/{postId}/comments")
 	public ResponseEntity<CommentDTO> createComment(@PathVariable("postId") long postId,
@@ -40,6 +45,8 @@ public class CommentController {
 		return new ResponseEntity<>(commentDTOResult, HttpStatus.CREATED);
 	}
 	
+	
+	@ApiOperation(value = "Get All Comments By Post ID REST API")
 	@GetMapping("/{postId}/comments")
 	public List<CommentDTO> getAllCommentsByPostId(@PathVariable("postId") long postId)
 	{
@@ -47,6 +54,7 @@ public class CommentController {
 		return commentDTOList;
 	}
 	
+	@ApiOperation(value = "Get Single Comment By ID REST API")
 	@GetMapping("/{postId}/comments/{id}")
 	public ResponseEntity<CommentDTO> getCommentByPostIdAndCommentId(@PathVariable("postId") long postId,
 																	 @PathVariable("id") long id)
@@ -56,6 +64,7 @@ public class CommentController {
 	}
 	
 	// Only Admin is allowed to update a comment
+	@ApiOperation(value = "Update Comment By ID REST API")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{postId}/comments/{id}")
 	public ResponseEntity<CommentDTO> updateComment(@PathVariable("postId") long postId,
@@ -67,6 +76,7 @@ public class CommentController {
 	}
 	
 	// Only Admin is allowed to delete a comment
+	@ApiOperation(value = "Delete Comment By ID REST API")
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{postId}/comments/{id}")
 	public ResponseEntity<String> deleteComment(@PathVariable("postId") long postId,

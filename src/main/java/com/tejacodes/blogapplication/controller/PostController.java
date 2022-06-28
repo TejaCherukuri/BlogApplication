@@ -20,6 +20,10 @@ import com.tejacodes.blogapplication.dto.PostResponse;
 import com.tejacodes.blogapplication.service.PostService;
 import com.tejacodes.blogapplication.util.AppConstants;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(value = "CRUD Rest APIs for Post resources")
 @RestController
 @RequestMapping("/api/v1/posts")
 public class PostController {
@@ -39,6 +43,7 @@ public class PostController {
 	 * To create/add a new post
 	 * Only Admin is allowed to create a post - Secured using @PreAuthroize of Spring Security
 	 */
+	@ApiOperation(value = "Create Post REST API")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDTO)
@@ -50,6 +55,7 @@ public class PostController {
 	/*
 	 * To get all the posts using Pagination and Sorting Features
 	 */
+	@ApiOperation(value = "Get All Posts REST API")
 	@GetMapping
 	public PostResponse getAllPosts(
 			@RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
@@ -65,6 +71,7 @@ public class PostController {
 	/*
 	 * To get a post by it's id
 	 */
+	@ApiOperation(value = "Get Post By Id REST API")
 	@GetMapping("/{id}")
 	public PostDTO getPostById(@PathVariable("id") long id)
 	{
@@ -76,6 +83,7 @@ public class PostController {
 	 * To update a post
 	 * Only Admin is allowed to update a post - Secured using @PreAuthroize of Spring Security
 	 */
+	@ApiOperation(value = "Update Post By Id REST API")
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable("id") long id)
@@ -88,6 +96,7 @@ public class PostController {
 	 * To delete a post by id
 	 * Only Admin is allowed to delete a post - Secured using @PreAuthroize of Spring Security
 	 */
+	@ApiOperation(value = "Delete Post By Id REST API")
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> deletePostById(@PathVariable("id") long id)

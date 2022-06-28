@@ -5,21 +5,30 @@ import java.util.Set;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "Post model information")
 public class PostDTO {
 	
+	@ApiModelProperty(value = "Blog post id")
 	private long id;
 	
+	@ApiModelProperty(value = "Blog post title")
 	@NotEmpty
 	@Size(min = 2, message = "Post title should have atleast 2 characters")
 	private String title;
 	
+	@ApiModelProperty(value = "Blog post description")
 	@NotEmpty
 	@Size(min = 10, message = "Post Description should have atleast 10 characters")
 	private String description;
 	
+	@ApiModelProperty(value = "Blog post content")
 	@NotEmpty
 	private String content;
 	
+	@ApiModelProperty(value = "Blog post comments")
 	private Set<CommentDTO> comments;
 	
 	public PostDTO() {}

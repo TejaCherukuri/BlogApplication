@@ -24,6 +24,10 @@ import com.tejacodes.blogapplication.repository.RoleRepository;
 import com.tejacodes.blogapplication.repository.UserRepository;
 import com.tejacodes.blogapplication.security.JwtTokenProvider;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(value = "Auth controller exposes siginin and signup REST APIs")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -43,7 +47,7 @@ public class AuthController {
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
-	
+	@ApiOperation(value = "REST API to Signin or Login user to Blog app")
 	@PostMapping("/signin")
 	public ResponseEntity<JwtAuthResponse> authenticateUser(@RequestBody SigninDTO signinDTO)
 	{
@@ -63,6 +67,7 @@ public class AuthController {
 	 * repository layer, which is not suggested.
 	 * Please have a service interface that will register and authenticate the user and then return the result to Controller.
 	 */
+	@ApiOperation(value = "REST API to Register or Signup user to Blog app")
 	@PostMapping("/signup")
 	public ResponseEntity<String> registerUser(@RequestBody SignupDTO signupDTO)
 	{

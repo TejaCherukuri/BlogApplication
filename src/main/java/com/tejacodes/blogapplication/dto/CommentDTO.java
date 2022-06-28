@@ -4,17 +4,25 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+
+@Api(value = "Comment model information")
 public class CommentDTO {
 	
+	@ApiModelProperty(value = "Comment id")
 	private long id;
 	
+	@ApiModelProperty(value = "Comment name")
 	@NotEmpty(message = "Name should not be null or empty")
 	private String name;
 	
+	@ApiModelProperty(value = "Comment email")
 	@NotEmpty
 	@Email
 	private String email;
 	
+	@ApiModelProperty(value = "Comment body")
 	@Size(min = 10, message = "Comment Body should have atleast 10 characters")
 	private String body;
 	

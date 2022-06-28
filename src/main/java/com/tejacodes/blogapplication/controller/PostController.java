@@ -1,5 +1,7 @@
 package com.tejacodes.blogapplication.controller;
 
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tejacodes.blogapplication.dto.PostDTO;
+import com.tejacodes.blogapplication.dto.PostDTOv2;
 import com.tejacodes.blogapplication.dto.PostResponse;
 import com.tejacodes.blogapplication.service.PostService;
 import com.tejacodes.blogapplication.util.AppConstants;
@@ -63,14 +66,46 @@ public class PostController {
 	}
 	
 	/*
-	 * To get a post by it's id
+	 * To get a post by it's id (Version 1)
 	 */
-	@GetMapping("/{id}")
-	public PostDTO getPostById(@PathVariable("id") long id)
+	@GetMapping("/v1/{id}")	// One way to version your Rest API - Versioning through URI
+	//@GetMapping(value = "/{id}", params = "version=1") // Versioning through Query Parameters - /api/posts/1?version=1
+	//@GetMapping(value = "/{id}", headers = "X-API-VERSION=1") // Versioning through Custom Headers - /api/posts/1 (Need to pass custom header)
+	//@GetMapping(value = "/{id}", produces = "application/vdn.tejacodes-v1+json") // Version through content negotiation {Need to pass this in Accept Header of HttpRequest}
+	public PostDTO getPostByIdv1(@PathVariable("id") long id)
 	{
 		PostDTO postDTOResult = postService.getPostById(id);
 		return postDTOResult;
 	}
+	
+	/*
+	 * To get a post by it's id (Version 2)
+	 */
+	@GetMapping("/v2/{id}")	// One way to version your Rest API - Versioning through URI
+	//@GetMapping(value = "/{id}", params = "version=2") // Versioning through Query Parameters - /api/posts/1?version=2
+	//@GetMapping(value = "/{id}", headers = "X-API-VERSION=2") // Versioning through Custom Headers - /api/posts/1 (Need to pass custom header)
+	//@GetMapping(value = "/{id}", produces = "application/vdn.tejacodes-v2+json") // Version through content negotiation {Need to pass this in Accept Header of HttpRequest}
+	public PostDTOv2 getPostByIdv2(@PathVariable("id") long id)
+	{
+		PostDTO postDTOResult = postService.getPostById(id);
+		
+		PostDTOv2 postDTOv2 = new PostDTOv2();
+		postDTOv2.setId(postDTOResult.getId());
+		postDTOv2.setTitle(postDTOResult.getTitle());
+		postDTOv2.setContent(postDTOResult.getContent());
+		postDTOv2.setDescription(postDTOResult.getDescription());
+		postDTOv2.setComments(postDTOResult.getComments());
+		
+		ArrayList<String> tags = new ArrayList<>();
+		tags.add("Java");
+		tags.add("Spring");
+		tags.add("Spring Boot");
+		
+		postDTOv2.setTags(tags);
+		
+		return postDTOv2;
+	}
+	
 	
 	/*
 	 * To update a post

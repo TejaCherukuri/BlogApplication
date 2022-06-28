@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tejacodes.blogapplication.dto.JwtAuthResponse;
 import com.tejacodes.blogapplication.dto.SigninDTO;
 import com.tejacodes.blogapplication.dto.SignupDTO;
 import com.tejacodes.blogapplication.entity.Role;
 import com.tejacodes.blogapplication.entity.User;
 import com.tejacodes.blogapplication.repository.RoleRepository;
 import com.tejacodes.blogapplication.repository.UserRepository;
+import com.tejacodes.blogapplication.security.JwtTokenProvider;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,6 +39,23 @@ public class AuthController {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+	
+	
+	@PostMapping("/signin")
+	public ResponseEntity<JwtAuthResponse> authenticateUser(@RequestBody SigninDTO signinDTO)
+	{
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(signinDTO.getUsernameOrEmail(), signinDTO.getPassword()));
+		
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		String token = jwtTokenProvider.generateToken(authentication);
+		
+		return ResponseEntity.ok(new JwtAuthResponse(token));
+	}
 	
 	
 	/*
@@ -72,14 +91,5 @@ public class AuthController {
 
 	}
 	
-	@PostMapping("/signin")
-	public ResponseEntity<String> authenticateUser(@RequestBody SigninDTO signinDTO)
-	{
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(signinDTO.getUsernameOrEmail(), signinDTO.getPassword()));
-		
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-		return new ResponseEntity<>("User signed-in Successfully!", HttpStatus.OK);
-	}
+
 }

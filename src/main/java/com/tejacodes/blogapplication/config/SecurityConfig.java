@@ -10,10 +10,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.tejacodes.blogapplication.security.CustomerUserDetailsService;
+import com.tejacodes.blogapplication.security.JwtAuthenticationEntryPoint;
+import com.tejacodes.blogapplication.security.JwtAuthenticationFilter;
 
 @SuppressWarnings("deprecation")
 @Configuration
@@ -24,20 +28,58 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomerUserDetailsService customerUserDetailsService;
 	
+	@Autowired
+	private JwtAuthenticationEntryPoint authenticationEntryPoint;
+	
+	@Bean
+	public PasswordEncoder passwordEncoder()
+	{
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+	
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter()
+	{
+		return new JwtAuthenticationFilter();
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.csrf().disable()
+			.exceptionHandling()
+			.authenticationEntryPoint(authenticationEntryPoint)
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
 			.authorizeRequests()
 			.antMatchers(HttpMethod.GET, "/api/**").permitAll()
 			.antMatchers("/api/auth/**").permitAll()
 			.anyRequest()
-			.authenticated()
-			.and()
-			.httpBasic();
+			.authenticated();
+		
+		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		
 	}
 	
-	// This method is used to configure/define roles in-memory i.e: gets deleted upon server restart/stop
+	// This method is used to configure role based authentication using user details from the database
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		
+		auth.userDetailsService(customerUserDetailsService)
+			.passwordEncoder(passwordEncoder());
+		
+		}
+
+	
+// This method is used to configure/define roles in-memory i.e: gets deleted upon server restart/stop
 	
 //	@Override
 //	@Bean
@@ -58,25 +100,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		return new InMemoryUserDetailsManager(user,admin);
 //	}
 	
-	
-	// This method is used to configure role based authentication using user details from the database
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-		auth.userDetailsService(customerUserDetailsService)
-			.passwordEncoder(passwordEncoder());
-		
-		}
-	
-	@Bean
-	PasswordEncoder passwordEncoder()
-	{
-		return new BCryptPasswordEncoder();
-	}
-	
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
 }

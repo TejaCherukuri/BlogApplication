@@ -19,7 +19,6 @@ import com.tejacodes.blogapplication.security.CustomerUserDetailsService;
 import com.tejacodes.blogapplication.security.JwtAuthenticationEntryPoint;
 import com.tejacodes.blogapplication.security.JwtAuthenticationFilter;
 
-@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)		// Used to enable @Pre and @Post annotations used for controlling role based access on apis.
@@ -62,6 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
 			.antMatchers("/api/v1/auth/**").permitAll()
+			.antMatchers("/v2/api-docs/**").permitAll()
+			.antMatchers("/swagger-ui/**").permitAll()
+			.antMatchers("/swagger-resources/**").permitAll()
+			.antMatchers("/swagger-ui.html/**").permitAll()
+			.antMatchers("/webjars/**").permitAll()
 			.anyRequest()
 			.authenticated();
 		

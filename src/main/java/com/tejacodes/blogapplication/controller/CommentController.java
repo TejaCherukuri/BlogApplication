@@ -20,7 +20,7 @@ import com.tejacodes.blogapplication.dto.CommentDTO;
 import com.tejacodes.blogapplication.service.CommentService;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/v1/posts")
 public class CommentController {
 	
 	private CommentService commentService;

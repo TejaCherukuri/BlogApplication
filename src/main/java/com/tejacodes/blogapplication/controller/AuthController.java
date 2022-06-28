@@ -25,7 +25,7 @@ import com.tejacodes.blogapplication.repository.UserRepository;
 import com.tejacodes.blogapplication.security.JwtTokenProvider;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 	
 	@Autowired

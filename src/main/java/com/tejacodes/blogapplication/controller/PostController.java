@@ -21,7 +21,7 @@ import com.tejacodes.blogapplication.service.PostService;
 import com.tejacodes.blogapplication.util.AppConstants;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 	
 	/* 

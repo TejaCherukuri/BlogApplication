@@ -1,5 +1,7 @@
 package com.tejacodes.blogapplication.service;
 
+import java.util.List;
+
 import com.tejacodes.blogapplication.dto.PostDTO;
 import com.tejacodes.blogapplication.dto.PostResponse;
 
@@ -14,4 +16,6 @@ public interface PostService {
 	public PostDTO updatePost(PostDTO postDTO, long id);
 	
 	public void deletePostById(long id);
+	
+	public List<PostDTO> searchPosts(String query);
 }

@@ -125,6 +125,18 @@ public class PostServiceImpl implements PostService {
 	}
 	
 	/*
+	 * Used to search Posts
+	 */
+	@Override
+	public List<PostDTO> searchPosts(String query) {
+		
+		List<Post> posts = postRepository.searchPosts(query);
+		List<PostDTO> postDTOList = posts.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+		
+		return postDTOList;
+	}
+	
+	/*
 	 * Method to convert Entity to DTO
 	 */
 	private PostDTO mapToDTO(Post post) {
@@ -156,6 +168,5 @@ public class PostServiceImpl implements PostService {
 		
 		return post;
 	}
-
 
 }

@@ -1,5 +1,7 @@
 package com.tejacodes.blogapplication.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -103,6 +105,13 @@ public class PostController {
 	{
 		postService.deletePostById(id);
 		return ResponseEntity.ok(String.format("Post with id : %s is deleted successfully", id));
+	}
+	
+	
+	@GetMapping("/search")
+	public ResponseEntity<List<PostDTO>> searchPosts(@RequestParam("query") String query)
+	{
+		return ResponseEntity.ok(postService.searchPosts(query));
 	}
 
 }
